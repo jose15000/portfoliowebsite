@@ -1,0 +1,351 @@
+{
+  "nodes": [
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/next.config.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/next.config.ts",
+        "name": "next.config.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx",
+        "name": "layout.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx#RootLayout",
+      "type": "function",
+      "data": {
+        "name": "RootLayout"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+        "name": "page.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx#Home",
+      "type": "function",
+      "data": {
+        "name": "Home"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts",
+        "name": "onboarding.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts#main",
+      "type": "function",
+      "data": {
+        "name": "main"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts",
+        "name": "add-context.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts#main",
+      "type": "function",
+      "data": {
+        "name": "main"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx",
+        "name": "About.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx#About",
+      "type": "function",
+      "data": {
+        "name": "About"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx",
+        "name": "Contact.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx#Contact",
+      "type": "function",
+      "data": {
+        "name": "Contact"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx",
+        "name": "Footer.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx#Footer",
+      "type": "function",
+      "data": {
+        "name": "Footer"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx",
+        "name": "Hero.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx#Hero",
+      "type": "function",
+      "data": {
+        "name": "Hero"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx",
+        "name": "Nav.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx#Nav",
+      "type": "function",
+      "data": {
+        "name": "Nav"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx",
+        "name": "Projects.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx#Projects",
+      "type": "function",
+      "data": {
+        "name": "Projects"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx",
+        "name": "Skills.tsx"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx#Skills",
+      "type": "function",
+      "data": {
+        "name": "Skills"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/next.config.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/next/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx#RootLayout",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/next/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx",
+      "to": "./globals.css",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx#Home",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts#main",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/@modelcontextprotocol/sdk/dist/esm/client/stdio.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts#main",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/@modelcontextprotocol/sdk/dist/esm/client/stdio.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx#About",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx#Contact",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx#Footer",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx#Hero",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx#Nav",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx#Nav",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx#setActiveTab",
+      "type": "CALLS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/node_modules/@types/react/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx#Projects",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx",
+      "to": "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx#Skills",
+      "type": "DEFINES"
+    }
+  ],
+  "mtimes": {
+    "/home/jooj/Documents/projects/portfoliowebsite/add-context.ts": 1777927107564.438,
+    "/home/jooj/Documents/projects/portfoliowebsite/app/layout.tsx": 1777912983759.87,
+    "/home/jooj/Documents/projects/portfoliowebsite/app/page.tsx": 1777913420466.934,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/About.tsx": 1777926850617.4436,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/Contact.tsx": 1777926900776.4426,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/Footer.tsx": 1777926914865.4421,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/Hero.tsx": 1777926832881.444,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/Nav.tsx": 1777926930913.442,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/Projects.tsx": 1777926869544.443,
+    "/home/jooj/Documents/projects/portfoliowebsite/components/Skills.tsx": 1777926885485.4429,
+    "/home/jooj/Documents/projects/portfoliowebsite/next.config.ts": 1777861467546.1401,
+    "/home/jooj/Documents/projects/portfoliowebsite/onboarding.ts": 1777914260060.074
+  }
+}
