@@ -15,10 +15,10 @@ import {
   Texture,
 } from "three"
 
-// Classic ASCII density ramp — sparse → dense, like old-school ASCII art
-const TERMINAL_SYMBOLS = [".", "`", "'", "~", ":", ";", "=", "!", "i", "l", "t", "f", "n", "u", "#", "@"]
+// Dragonfly-inspired density ramp — sparse punctuation → angular/round chars → dense digits/blocks
+const TERMINAL_SYMBOLS = [".", "^", "~", "'", ":", "v", "c", "o", ";", "4", "7", "0", "O", "00", "#", "@", "■"]
 
-function createGlyphTexture(characters: string[], size = 32, font = "62px monospace"): CanvasTexture | null {
+function createGlyphTexture(characters: string[], size = 64, font = "100px monospace"): CanvasTexture | null {
   if (characters.length === 0) return null
   const count = characters.length
   const canvas = document.createElement("canvas")
@@ -28,7 +28,7 @@ function createGlyphTexture(characters: string[], size = 32, font = "62px monosp
   if (!ctx) return null
   ctx.fillStyle = "#000"
   ctx.fillRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = "#917AFF"
+  ctx.fillStyle = "#182334"
   ctx.font = font
   ctx.textAlign = "center"
   ctx.textBaseline = "middle"
@@ -307,7 +307,9 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     finalColor *= mix(1.0, vignette, vignetteIntensity);
   }
 
-  outputColor = vec4(finalColor, cellColor.a);
+  // Transparent background: alpha = 1 only where a glyph is drawn
+  float alpha = clamp(charValue * 2.0, 0.0, 1.0);
+  outputColor = vec4(finalColor, alpha);
 }
 `
 

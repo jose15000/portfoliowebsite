@@ -174,11 +174,7 @@ function SceneWithDelayedComposer({
   return (
     <>
       <Environment preset="studio" background={false} />
-      <ambientLight intensity={0.08} />
-      {/* Luz da esquerda: X negativo = lado esquerdo, Y levemente acima, Z quase zero = não vem de frente */}
-      <directionalLight position={[-8, 2, 1]} intensity={10} />
-      {/* Luz da direita: mais fraca, cria contraste assimétrico entre os lados */}
-      <directionalLight position={[8, -1, 1]} intensity={3} />
+      <ambientLight intensity={0} />
       <CameraHoverZoom isHovered={isHovered} />
       <Suspense fallback={null}>
         <DraggableUserModel isHovered={isHovered} />
@@ -188,17 +184,17 @@ function SceneWithDelayedComposer({
         <EffectComposer>
           <AsciiEffect
             style="standard"
-            cellSize={9}
+            cellSize={8}
             invert={true}
-            color={true}
+            color={false}
             characterSet="terminal"
             volumeShading={true}
             tintColor="#917AFF"
             resolution={resolution}
             mousePos={mousePos}
             postfx={{
-              contrastAdjust: 1.8,
-              brightnessAdjust: 0,
+              contrastAdjust: 2.2,
+              brightnessAdjust: 0.05,
             }}
           />
         </EffectComposer>
