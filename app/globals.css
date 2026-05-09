@@ -23,6 +23,14 @@
 
 
 @theme {
+  --windows-base-blue: #0A246A;
+  --windows-blue-100: #4977B4;
+  --windows-blue-200: #0062EA;
+  --windows-gray: #C0C0C0;
+}
+
+
+@theme {
   --font-display: "Cormorant", "EB Garamond", Times, serif;
 }
 
@@ -31,7 +39,7 @@
 }
 
 @theme {
-  --font-monospacec: "IBM Plex Mono", "monospace";
+  --font-monospace: "IBM Plex Mono", "monospace";
 }
 
 
@@ -65,16 +73,6 @@ body {
   border: 1px outset var(--bevel-light);
 }
 
-/* ===== TYPOGRAPHY ===== */
-h1,
-h2,
-h3,
-h4,
-.font-display {
-  font-family: var(--font-display);
-  font-weight: 400;
-}
-
 h1 {
   letter-spacing: -0.05em;
   line-height: 1;
@@ -100,6 +98,8 @@ h1 {
   text-decoration: underline;
   color: var(--text-slate-200);
 }
+
+.project-windows {}
 
 /* ===== AQUA TEAL BUTTON (Dark OS X style) ===== */
 .aqua-btn {
@@ -139,4 +139,14 @@ h1 {
 
 .text-small {
   font-size: 11px;
+}
+
+
+@layer utilities {
+  .shadow-win95 {
+    box-shadow: inset -1px 0px 0px 0px #404040,
+      inset 1px 1px 0px 0px #eceae7,
+      inset -2px -2px 0px 0px #808080,
+      inset 2px 2px 0px 0px #ffffff;
+  }
 }

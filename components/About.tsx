@@ -1,16 +1,16 @@
+import { Titles } from "./terminal/Titles";
+import { List } from "./terminal/List";
+import { info } from "@/utils/info";
+
+
 export default function About() {
   return (
-    <section id="about" className="text-sm md:text-base font-monospace text-white px-5 ">
+    <section id="about" className="text-sm md:text-base font-monospace text-white px-5">
       <div >
-        <div className="flex flex-row gap-3">
-          <div className=""> {'>'} About Me </div>
-          <span className="md:hidden overflow-hidden">{"=".repeat(50)}</span>
-          <span className="hidden md:inline overflow-hidden">{"=".repeat(100)}</span>
-        </div>
-
+        <Titles title="About Me" />
         <div className="w-full md:max-w-4/6">
-          <div>
-            <p>
+          <div className="text:sm md:text-base">
+            <p className="mb-3">
               I'm a developer from Brazil with a focus on building things that actually work at scale.
               My interest sits at the intersection of <strong className="text-slate-50">AI systems, graph-based architectures</strong>,
               and tools that improve how developers work.
@@ -22,11 +22,9 @@ export default function About() {
             </p>
           </div>
           <div>
-            <ul>
-              <li className="flex flex-row justify-between max-w-1/4 "><strong className="text-amber-300">location:</strong> Aracaju, BR</li>
-              <li className="flex flex-row justify-between max-w-1/4 "><strong className="text-amber-300" >education:</strong> CS @ UNIT</li>
-              <li className="flex flex-row justify-between max-w-1/4 "><strong className="text-amber-300">focus:</strong> AI / Backend / Scale</li>
-            </ul>
+            {info.map(info => (
+              <List key={info.id} title={info.title} item={info.description} />
+            ))}
           </div>
         </div>
       </div>
