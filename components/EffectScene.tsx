@@ -261,7 +261,7 @@ export function EffectScene({ className, enableZoom = true, canvasSize }: Effect
     >
       <Canvas
         gl={{ alpha: true }}
-        dpr={Math.min(typeof window !== "undefined" ? window.devicePixelRatio : 1, 1.5)}
+        dpr={[1, 1.5]}
         camera={{ position: [0, 0, CAMERA_BASE_Z], fov: 50 }}
         onCreated={({ gl }) => {
           gl.toneMappingExposure = 0.6

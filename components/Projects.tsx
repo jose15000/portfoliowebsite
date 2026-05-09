@@ -35,18 +35,18 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section id="projects" style={{ padding: "0 20px 40px 20px" }}>
-      <div className="bevel-box">
-        <div className="bevel-bar-teal">Selected Projects</div>
-        
+    <section id="projects" className="px-5 text-white font-monospacec">
+      <div>
+        <div className="bevel-bar-teal">{'>'} Selected Projects</div>
+
         {/* Table-like Layout */}
         <div style={{ display: "flex", flexDirection: "column" }}>
           {projects.map((project, index) => (
-            <div 
-              key={project.id} 
-              style={{ 
-                display: "flex", 
-                padding: "15px 20px", 
+            <div
+              key={project.id}
+              style={{
+                display: "flex",
+                padding: "15px 20px",
                 borderBottom: index !== projects.length - 1 ? "1px solid var(--bevel-dark)" : "none",
                 background: index % 2 === 0 ? "var(--bg-slate-800)" : "var(--bg-slate-900)"
               }}
@@ -62,7 +62,7 @@ export default function Projects() {
                   Release Date: {project.year}
                 </div>
               </div>
-              
+
               {/* Middle col: Description */}
               <div style={{ flex: 1, paddingRight: "20px", fontSize: "12px", color: "var(--text-slate-200)" }}>
                 {project.description}

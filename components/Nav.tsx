@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
 export default function Nav() {
-  const [activeTab, setActiveTab] = useState("Home");
 
   const tabs = [
     { name: "Home", href: "#hero" },

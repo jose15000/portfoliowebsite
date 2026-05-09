@@ -4,56 +4,26 @@ import { EffectScene } from "./EffectScene";
 
 export default function Hero() {
   return (
-    <section
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        minHeight: "80vh",
-        maxWidth: "1000px",
-        margin: "0 auto",
-        padding: "40px 20px",
-        gap: "40px",
-      }}
-    >
-      {/* Left: Text content */}
-      <div style={{ flex: 1 }}>
-        <h1 className="font-display" style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)", marginBottom: "12px" }}>
+    <section className="font-display flex flex-col lg:flex-row gap-10 items-center justify-between min-h-[80vh] w-full max-w-6xl mx-auto px-6 py-12">
+      <div className="w-full lg:flex-1 ">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 text-slate-200">
           José Henrique.
         </h1>
-        <h2
-          className="font-display"
-          style={{
-            fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)",
-            color: "var(--accent-teal-300)",
-            fontStyle: "italic",
-            marginBottom: "24px",
-            lineHeight: 1.2,
-          }}
-        >
+        <h2 className="italic text-teal-300 text-2xl md:text-3xl lg:text-4xl mb-6 leading-tight">
           Full-Stack Developer now available.
         </h2>
-        <p
-          style={{
-            marginBottom: "32px",
-            lineHeight: 1.6,
-            fontSize: "14px",
-            color: "var(--text-slate-400)",
-          }}
-        >
+        <p className="text-slate-400 text-sm md:text-base mb-8 leading-relaxed max-w-xl">
           Building systems that think. Focused on AI agents, automation and
           scalable architectures. Currently studying CS at Universidade
           Tiradentes and shipping real products.
         </p>
-        <a href="#projects" className="aqua-btn">
+        <a href="#projects" className="aqua-btn w-max">
           See my work
         </a>
       </div>
 
-      {/* Right: 3D ASCII Canvas — fixed 480×480 so it never collapses */}
-      <div className="flex justify-center items-center" style={{ flexShrink: 0 }}>
-        <EffectScene className="items-center" canvasSize={600} enableZoom={false} />
+      <div className="flex justify-center items-center shrink-0 w-full lg:w-auto">
+        <EffectScene className="items-center" canvasSize={500} enableZoom={false} />
       </div>
     </section>
   );
