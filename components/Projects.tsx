@@ -1,5 +1,4 @@
 import { projects } from "@/utils/projects";
-import { Window } from "./window/Window";
 import { Titles } from "./terminal/Titles";
 
 export default function Projects() {
@@ -7,9 +6,9 @@ export default function Projects() {
     <section id="projects" className="px-5 text-white font-monospace size-full">
       <Titles title="Projects" />
       <div className="flex flex-col md:flex-row gap-2">
-        {projects.map(project => (
+        {/* {projects.map(project => (
           <Window key={project.id} title={project.name} year={project.year} description={project.description} tags={project.tags} link={project.github} />
-        ))}
+        ))} */}
       </div>
 
     </section>

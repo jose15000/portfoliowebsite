@@ -7,8 +7,8 @@ export function List({ title, item }: props) {
     return (
         <div>
             <ul className="my-3">
-                <li className="flex flex-row justify-between max-w-full md:max-w-1/2 ">
-                    <strong className="text-amber-300">{title}:</strong>{item}</li>
+                <li className="flex flex-row justify-between max-w-full md:max-w-1/2">
+                    <span className="text-amber-400">{title}:</span>{item}</li>
             </ul>
         </div>
     )

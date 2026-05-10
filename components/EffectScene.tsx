@@ -250,14 +250,10 @@ export function EffectScene({ className, enableZoom = true, canvasSize }: Effect
     <div
       ref={containerRef}
       data-model-canvas-container
-      className={className}
+      className={className || "w-full h-full min-h-[300px]"}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={
-        canvasSize
-          ? { width: canvasSize, height: canvasSize }
-          : { width: "100%", height: className ? "100%" : "100vh", minHeight: className ? 300 : undefined }
-      }
+      style={canvasSize ? { width: canvasSize, height: canvasSize } : undefined}
     >
       <Canvas
         gl={{ alpha: true }}
