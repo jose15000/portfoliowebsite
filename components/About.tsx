@@ -7,7 +7,7 @@ export default function About() {
   return (
     <section id="about" className="text-sm md:text-base font-monospace text-white px-5">
       <div >
-        <Titles title="About Me" />
+
         <div className="w-full md:max-w-4/6">
           <div className="text:sm md:text-base">
             <p className="mb-3">

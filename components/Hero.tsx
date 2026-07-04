@@ -22,9 +22,9 @@ export default function Hero() {
         </a>
       </div>
 
-      <div className="flex justify-center items-center shrink-0">
-        <EffectScene className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]" enableZoom={false} />
-      </div>
+      {/* <div className="flex justify-center items-center shrink-0">
+        <EffectScene className="w-[350px] h-[350px] md:w-[600px] md:h-[600px]" enableZoom={false} />
+      </div> */}
     </section>
   );
 }

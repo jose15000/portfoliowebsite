@@ -57,7 +57,7 @@ function UserModel(props: ComponentPropsWithoutRef<"group">) {
 
 useGLTF.preload("/models/user-model.glb")
 
-const AUTO_ROTATE_SPEED = 0.4
+const AUTO_ROTATE_SPEED = 0.5
 const HOVER_SPIN_MULTIPLIER = 2
 const TILT_FORWARD = 0.3
 const TILT_LEFT = -0.08
@@ -67,57 +67,19 @@ const CAMERA_ZOOMED_Z = CAMERA_BASE_Z / 1.1
 
 function DraggableUserModel({ isHovered = false }: { isHovered?: boolean }) {
   const groupRef = useRef<Group>(null)
-  const [rotation, setRotation] = useState({ x: 0, y: 0 })
-  const isDragging = useRef(false)
-  const lastPointer = useRef({ x: 0, y: 0 })
   const autoY = useRef(0)
 
   const spinSpeed = isHovered ? AUTO_ROTATE_SPEED * HOVER_SPIN_MULTIPLIER : AUTO_ROTATE_SPEED
 
   useFrame((_, delta) => {
     if (!groupRef.current) return
-    if (!isDragging.current) {
-      autoY.current += delta * spinSpeed
-    }
-    groupRef.current.rotation.x = rotation.x + TILT_FORWARD
-    groupRef.current.rotation.y = rotation.y + autoY.current
+
+    autoY.current += delta * spinSpeed
+
+    groupRef.current.rotation.x = TILT_FORWARD
+    groupRef.current.rotation.y = autoY.current
     groupRef.current.rotation.z = TILT_LEFT
   })
-
-  useEffect(() => {
-    const container = document.querySelector("[data-model-canvas-container]")
-    if (!container) return
-
-    const onPointerDown = (e: Event) => {
-      const pe = e as PointerEvent
-      if ((pe.target as HTMLElement).closest("canvas")) {
-        isDragging.current = true
-        lastPointer.current = { x: pe.clientX, y: pe.clientY }
-      }
-    }
-
-    const onPointerMove = (e: Event) => {
-      if (!isDragging.current) return
-      const pe = e as PointerEvent
-      const dx = (pe.clientX - lastPointer.current.x) * 0.005
-      const dy = (pe.clientY - lastPointer.current.y) * 0.005
-      lastPointer.current = { x: pe.clientX, y: pe.clientY }
-      setRotation((r) => ({ x: r.x - dy, y: r.y + dx }))
-    }
-
-    const onPointerUp = () => {
-      isDragging.current = false
-    }
-
-    container.addEventListener("pointerdown", onPointerDown as EventListener)
-    window.addEventListener("pointermove", onPointerMove as EventListener)
-    window.addEventListener("pointerup", onPointerUp)
-    return () => {
-      container.removeEventListener("pointerdown", onPointerDown as EventListener)
-      window.removeEventListener("pointermove", onPointerMove as EventListener)
-      window.removeEventListener("pointerup", onPointerUp)
-    }
-  }, [])
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
@@ -175,9 +137,9 @@ function SceneWithDelayedComposer({
     <>
       <Environment preset="studio" background={false} />
       <ambientLight intensity={0} />
-      <CameraHoverZoom isHovered={isHovered} />
+      <CameraHoverZoom isHovered={false} />
       <Suspense fallback={null}>
-        <DraggableUserModel isHovered={isHovered} />
+        <DraggableUserModel isHovered={false} />
       </Suspense>
       <OrbitControls enableRotate={false} enableZoom={enableZoom} enablePan={false} />
       {composerReady && (
@@ -251,7 +213,7 @@ export function EffectScene({ className, enableZoom = true, canvasSize }: Effect
       ref={containerRef}
       data-model-canvas-container
       className={className || "w-full h-full min-h-[300px]"}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => setIsHovered(false)}
       onMouseLeave={() => setIsHovered(false)}
       style={canvasSize ? { width: canvasSize, height: canvasSize } : undefined}
     >
