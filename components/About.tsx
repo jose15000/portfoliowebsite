@@ -5,10 +5,13 @@ import { info } from "@/utils/info";
 
 export default function About() {
   return (
-    <section id="about" className="text-sm md:text-base font-monospace text-white px-5">
+    <section id="about" className="flex justify-center w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 mx-auto px-6 py-12">
       <div >
-
         <div className="w-full md:max-w-4/6">
+        <Titles title="About me"/>
+        <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">
+          Turning ideas into products.
+        </h1>
           <div className="text:sm md:text-base">
             <p className="mb-3">
               I'm a developer from Brazil with a focus on building things that actually work at scale.

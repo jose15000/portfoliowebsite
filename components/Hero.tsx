@@ -5,7 +5,7 @@ import { EffectScene } from "./EffectScene";
 export default function Hero() {
   return (
     <section className="font-display flex flex-col lg:flex-row gap-10 items-center justify-between min-h-[80vh] w-full max-w-6xl mx-auto px-6 py-12">
-      <div className="w-full lg:flex-1 ">
+      <div className="w-full lg:flex-1">
         <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 text-slate-200">
           José Henrique.
         </h1>
@@ -22,9 +22,9 @@ export default function Hero() {
         </a>
       </div>
 
-      {/* <div className="flex justify-center items-center shrink-0">
+      <div className="flex justify-center items-center shrink-0">
         <EffectScene className="w-[350px] h-[350px] md:w-[600px] md:h-[600px]" enableZoom={false} />
-      </div> */}
+      </div> 
     </section>
   );
 }
