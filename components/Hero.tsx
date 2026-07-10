@@ -17,8 +17,8 @@ export default function Hero() {
           scalable architectures. Currently studying CS at Universidade
           Tiradentes and shipping real products.
         </p>
-        <a href="#projects" className="aqua-btn w-max">
-          See my work
+        <a href="#projects" className="text-amber-400 text-xl hover:underline">
+          {">"} See my work
         </a>
       </div>
 

@@ -13,7 +13,6 @@ export default function Home() {
       <main>
         <Hero />
         <div className="mx-auto">
-
           <About />
           <Projects />
           <Skills />

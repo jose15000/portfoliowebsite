@@ -2,6 +2,7 @@ export const projects = [
     {
         id: "1",
         name: "ContextAtlas",
+        icon: "context-atlas",
         year: "2025",
         description: "An MCP server that gives AI coding agents a real understanding of your codebase. Analyzes the AST, file graph, and relationships.",
         tags: ["TypeScript", "MCP", "AI"],
@@ -10,6 +11,7 @@ export const projects = [
     {
         id: "2",
         name: "LSTM Bitcoin Prediction",
+        icon: "lstm",
         year: "2024",
         description: "A deep learning pipeline using LSTM networks to forecast Bitcoin price trends from time-series data. Built in Python with Jupyter.",
         tags: ["Python", "LSTM", "ML"],

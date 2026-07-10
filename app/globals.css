@@ -30,6 +30,8 @@
 }
 
 
+
+
 @theme {
   --font-display: "Cormorant", "EB Garamond", Times, serif;
 }
@@ -99,54 +101,87 @@ h1 {
   color: var(--text-slate-200);
 }
 
-.project-windows {}
-
-/* ===== AQUA TEAL BUTTON (Dark OS X style) ===== */
-.aqua-btn {
-  display: inline-block;
-  padding: 6px 18px;
-  background: linear-gradient(to bottom, #5eead4 0%, #14b8a6 45%, #0f766e 50%, #115e59 100%);
-  border: 1px solid #042f2e;
-  border-radius: 16px;
-  color: #ffffff !important;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: bold;
-  text-decoration: none;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.6);
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.6);
+section {
+  width: 100%;
+  margin-inline:auto;
+  display: flex;
+  justify-items: center;
 }
 
-.aqua-btn:hover {
-  background: linear-gradient(to bottom, #99f6e4 0%, #2dd4bf 45%, #14b8a6 50%, #0f766e 100%);
-}
-
-.aqua-btn:active {
-  background: linear-gradient(to bottom, #0f766e 0%, #14b8a6 100%);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
-}
-
-/* Misc Utilities */
-.link {
-  color: var(--accent-teal-300);
-  text-decoration: none;
-}
-
-.link:hover {
-  text-decoration: underline;
-  color: var(--text-slate-200);
-}
-
-.text-small {
-  font-size: 11px;
-}
-
-
-@layer utilities {
-  .shadow-win95 {
-    box-shadow: inset -1px 0px 0px 0px #404040,
-      inset 1px 1px 0px 0px #eceae7,
-      inset -2px -2px 0px 0px #808080,
-      inset 2px 2px 0px 0px #ffffff;
+@media(min-width: 1024px) {
+  section {
+    max-width: 1152px;
   }
 }
+
+
+/* ===== AQUA TEAL BUTTON (macOS Aqua-inspired) ===== */
+  .aqua-btn {
+    font-family: "myriad-pro", system-ui;
+    border-radius: 1000px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    outline: none;
+    border: none;
+ 
+    background: linear-gradient(rgba(20, 130, 115, 0.625), rgba(45, 212, 191, 0.625));
+    box-shadow: 0 0.375em 0.5em rgba(0, 0, 0, 0.3),
+                0 0.125em 0.125em rgba(15, 118, 110, 0.5),
+                inset 0 0.25em 0.25em rgba(0, 30, 27, 0.5),
+                inset 0 0.375em 0.5em 0.25em #5EEAD4;
+  }
+ 
+  .aqua-btn:focus,
+  .aqua-btn:active {
+    box-shadow: 0 0.375em 0.5em rgba(0, 0, 0, 0.3),
+                0 0.125em 0.125em rgba(15, 118, 110, 0.5),
+                inset 0 0.25em 0.25em rgba(0, 30, 27, 0.5),
+                inset 0 0.375em 0.5em 0.25em #5EEAD4,
+                0 0 0.5em rgba(20, 184, 166, 0.5);
+  }
+
+  .aqua-btn:hover {
+    cursor: pointer;
+  }
+ 
+  .aqua-btn::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 33%;
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
+    width: calc(100% - 0.875em);
+    border-radius: 2em 2em 0.5em 0.5em;
+    top: 5%;
+    filter: blur(1px);
+    z-index: 2;
+  }
+ 
+  /* bottom glow */
+  .aqua-btn::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 33%;
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5));
+    width: calc(100% - 1.25em);
+    border-radius: 0.75em;
+    bottom: 10%;
+    filter: blur(3px);
+  }
+ 
+  .aqua-btn a {
+    position: relative;
+    top: -1px;
+    z-index: 1;
+    letter-spacing: 0.0375em;
+    -webkit-text-stroke-width: 0.025em;
+    -webkit-text-stroke-color: #063d36;
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 0.25em 0.2em rgba(0, 40, 36, 0.4);
+  }
+
