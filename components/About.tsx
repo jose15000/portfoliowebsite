@@ -5,14 +5,15 @@ import { info } from "@/utils/info";
 
 export default function About() {
   return (
-    <section id="about" className="flex justify-center w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 mx-auto py-12">
-      <div >
-        <div className="w-full md:max-w-4/6">
+    <section id="about" className="w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 md:mx-auto py-12">
+        <div className="max-w-full">
         <Titles title="About me"/>
         <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">
           Turning ideas into products.
         </h1>
-          <div className="text:sm md:text-base">
+      <div className="flex flex-col md:flex-row" >
+          <img src="/images/me.png" alt="me" className="size-64 md:size-96 md:mr-10 mb-4 mx-auto"/>
+          <div className="text:sm md:text-base max-w-full">
             <p className="mb-3">
               I'm a developer from Brazil focused on building production-ready software that solves real problems. 
 
@@ -26,12 +27,12 @@ I enjoy designing systems as much as writing code. Whether I'm building AI agent
               market, I care about the underlying model, not just the interface.
             </p>
           </div>
-          <div>
-            {info.map(info => (
-              <List key={info.id} title={info.title} item={info.description} />
-            ))}
-          </div>
         </div>
+         <div>
+          {info.map(i => (
+            <List key={i.id} title={i.title} item={i.description} />
+          ))}
+         </div>
       </div>
     </section>
   );
