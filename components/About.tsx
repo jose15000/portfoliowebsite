@@ -1,11 +1,16 @@
 import { Titles } from "./terminal/Titles";
 import { List } from "./terminal/List";
 import { info } from "@/utils/info";
+import {motion} from "framer-motion";
 
 
 export default function About() {
   return (
-    <section id="about" className="w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 md:mx-auto py-12">
+    <motion.section id="about" className="w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 md:mx-auto py-12"
+    initial={{opacity:0.1, y:28}}
+    whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
         <div className="max-w-full">
         <Titles title="About me"/>
         <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">
@@ -34,6 +39,6 @@ I enjoy designing systems as much as writing code. Whether I'm building AI agent
           ))}
          </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
