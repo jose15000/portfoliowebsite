@@ -7,10 +7,9 @@ export default function Projects() {
     <section id="projects" className="flex flex-col px-5 text-white font-monospace size-full">
       <Titles title="Projects" />
       <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">What I've Built</h1>
-      <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+      <div className="mx-auto flex flex-row gap-2">
         {projects.map((project) => (
           <ProjectCard
-            icon={project.icon as "context-atlas" | "lioapply" | "lstm" | "telegram-bot"}
             key={project.id}
             name={project.name}
             description={project.description}

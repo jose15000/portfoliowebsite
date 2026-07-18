@@ -12,12 +12,9 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <div className="mx-auto">
-          <About />
           <Projects />
           <Skills />
           <Contact />
-        </div>
       </main>
       <Footer />
     </div>
