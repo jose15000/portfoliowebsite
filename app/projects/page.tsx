@@ -5,9 +5,7 @@ export default function ProjectsPage() {
     return (
         <>
         <Nav/>
-        <div className="mx-auto">
         <Projects/>
-        </div>
         </>
     ) 
 }

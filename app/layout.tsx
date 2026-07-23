@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 
 const cormorant = Cormorant({
   subsets: ["latin"],
@@ -38,14 +39,19 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${ibmPlexMono.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${cormorant.variable} ${ibmPlexMono.variable} smooth-wrapper`}>
+      <body className="smooth-content">
+        <SmoothScrollProvider>
+        {children}
+        </SmoothScrollProvider>
+        </body>
     </html>
   );
 }

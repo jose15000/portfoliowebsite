@@ -1,6 +1,7 @@
+"use client";
 
-
-import About from "@/components/About";
+import About from "@/components/About/About";
+import { JourneyComponent } from "@/components/About/Journey";
 import Nav from "@/components/Nav";
 
 export default function AboutPage() {
@@ -9,6 +10,7 @@ export default function AboutPage() {
         <Nav/>
         <div className="mx-auto">
         <About />
+        <JourneyComponent/>
         </div>
         </>
         

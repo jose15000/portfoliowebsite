@@ -4,7 +4,7 @@ import { ProjectCard } from "./ProjectCard/ProjectCard";
 
 export default function Projects() {
   return (
-    <section id="projects" className="flex flex-col px-5 text-white font-monospace size-full">
+    <main id="projects" className="w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 md:mx-auto py-12">
       <Titles title="Projects" />
       <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">What I've Built</h1>
       <div className="mx-auto flex flex-row gap-2">
@@ -18,6 +18,6 @@ export default function Projects() {
           />
         ))}
       </div>
-    </section>
+    </main>
   );
 }

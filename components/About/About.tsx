@@ -1,19 +1,42 @@
 "use client";
 
-
-import { Titles } from "./terminal/Titles";
-import { List } from "./terminal/List";
+import { Titles } from "../terminal/Titles";
+import { List } from "../terminal/List";
 import { info } from "@/utils/info";
-import {motion} from "framer-motion";
-
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 export default function About() {
+
+    const container = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLHeadingElement>(null);
+ 
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+ 
+      tl.from(container.current, {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+      }).from(
+        headerRef.current,
+        {
+          opacity: 0,
+          x: -80,
+          duration: 0.8,
+        },
+        "<"
+      );
+    },
+    { scope: container }
+  );
+
   return (
-    <motion.section id="about" className="w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 md:mx-auto py-12"
-    initial={{opacity:0.01, y:28}}
-    whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+    <section ref={container} id="about" className="w-full lg:max-w-6xl text-sm md:text-base font-monospace text-white px-5 md:mx-auto py-12">
         <div className="max-w-full">
         <Titles title="About me"/>
         <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">
@@ -42,6 +65,6 @@ I enjoy designing systems as much as writing code. Whether I'm building AI agent
           ))}
          </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
