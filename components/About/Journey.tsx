@@ -95,9 +95,9 @@ export function JourneyComponent() {
   );
 
   return (
-    <section className="flex flex-col mx-auto max-w-4xl py-24 text-white font-monospace">
+    <section className="flex flex-col mx-auto max-w-full px-4 md:max-w-4xl py-24 text-white font-monospace">
       <Titles title="Journey" />
-      <h1 className="font-display italic text-teal-300 text-3xl md:text-3xl lg:text-4xl mb-6 leading-tight">
+      <h1 className="font-display italic text-teal-300 text-2xl md:text-3xl lg:text-4xl mb-6 leading-tight">
         A bit of my story as a developer.
       </h1>
 

@@ -61,16 +61,7 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
 
-  background-color: var(--bg-slate-900);
-  background-image: repeating-linear-gradient(to bottom,
-      transparent,
-      transparent 1px,
-      rgba(30, 41, 59, 0.6) 1px,
-      /* Slate 800 */
-      rgba(30, 41, 59, 0.6) 2px);
-}
 
 
 ::-webkit-scrollbar {
@@ -93,13 +84,9 @@ h1 {
 }
 
 .sub-nav {
-  background: var(--bg-slate-800);
-  border-bottom: 1px solid var(--bevel-dark);
-  padding: 4px 0;
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   font-family: var(--font-ui);
-  margin-top: 10px;
 }
 
 .sub-nav a {
