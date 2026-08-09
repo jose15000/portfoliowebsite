@@ -7,95 +7,104 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useScrolleStore } from "@/store/useScroll";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function JourneyComponent() {
   const container = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const isScrollActive = useScrolleStore((state) => state.isScrolling);
 
   useGSAP(
     () => {
-      const items = gsap.utils.toArray<HTMLElement>(".timeline-item");
-
-      items.forEach((item) => {
-        gsap.from(item, {
-          opacity: 0,
-          y: 40,
-          duration: 0.6,
-          scrollTrigger: {
-            trigger: item,
-            start: "top 85%",
-          },
-        });
-      });
-
-
-      if (progressRef.current) {
-        gsap.to(progressRef.current, {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-          },
-        });
+      if (isScrollActive) {
+        return;
       }
 
-      items.forEach((item) => {
-        const dot = item.querySelector<HTMLElement>(".timeline-dot");
-        if (!dot) return;
+      const ctx = gsap.context(() => {
+        const items = gsap.utils.toArray<HTMLElement>(".timeline-item");
 
-        const description = item.querySelector<HTMLElement>(".timeline-description");
-        if (!description) return;
-
-               if (description) {
-          gsap.set(description, { height: 0, opacity: 0 });
-        }
- 
-        ScrollTrigger.create({
-          trigger: item,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => activate(),
-          onEnterBack: () => activate(),
-          onLeave: () => deactivate(),
-          onLeaveBack: () => deactivate(),
+        items.forEach((item) => {
+          gsap.from(item, {
+            opacity: 0,
+            y: 40,
+            duration: 0.6,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+            },
+          });
         });
- 
-        function activate() {
-          dot?.classList.add("is-active");
-          if (description) {
-            gsap.to(description, {
-              height: "auto",
-              opacity: 1,
-              duration: 0.4,
-              ease: "power2.out",
-            });
-          }
+
+        if (progressRef.current && container.current) {
+          gsap.to(progressRef.current, {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top center",
+              end: "bottom center",
+              scrub: true,
+            },
+          });
         }
- 
-        function deactivate() {
-          dot?.classList.remove("is-active");
-          if (description) {
-            gsap.to(description, {
-              height: 0,
-              opacity: 0,
-              duration: 0.3,
-              ease: "power2.in",
-            });
+
+        items.forEach((item) => {
+          const dot = item.querySelector<HTMLElement>(".timeline-dot");
+          if (!dot) return;
+
+          const description = item.querySelector<HTMLElement>(".timeline-description");
+          if (!description) return;
+
+          gsap.set(description, { height: 0, opacity: 0 });
+
+          ScrollTrigger.create({
+            trigger: item,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => activate(),
+            onEnterBack: () => activate(),
+            onLeave: () => deactivate(),
+            onLeaveBack: () => deactivate(),
+          });
+
+          function activate() {
+            dot?.classList.add("is-active");
+            if (description) {
+              gsap.to(description, {
+                height: "auto",
+                opacity: 1,
+                duration: 0.4,
+                ease: "power2.out",
+              });
+            }
           }
-        }
-      });
+
+          function deactivate() {
+            dot?.classList.remove("is-active");
+            if (description) {
+              gsap.to(description, {
+                height: 0,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.in",
+              });
+            }
+          }
+        });
+      }, container);
+
+      return () => {
+        ctx.revert();
+      };
     },
 
-    { scope: container }
+    { scope: container, dependencies: [isScrollActive] }
   );
 
   return (
-    <section className="flex flex-col mx-auto max-w-full px-4 md:max-w-4xl py-24 text-white font-monospace">
+    <section className="flex flex-col w-full px-4 py-24 text-white font-monospace">
       <Titles title="Journey" />
       <h1 className="font-display italic text-teal-300 text-2xl md:text-3xl lg:text-4xl mb-6 leading-tight">
         A bit of my story as a developer.

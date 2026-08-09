@@ -1,19 +1,111 @@
-'use client'
+"use client"
 
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
 /* ------------------------------------------------------------------ */
-/*  Shaders                                                           */
+/*  1. A Classe TouchTexture (O segredo da distorção)                 */
+/* ------------------------------------------------------------------ */
+// Esta classe cria um mini-canvas invisível que desenha o rastro do mouse.
+class TouchTexture {
+  size: number
+  maxAge: number
+  radius: number
+  speed: number
+  trail: { x: number; y: number; age: number; force: number; vx: number; vy: number }[]
+  last: { x: number; y: number } | null
+  canvas: HTMLCanvasElement
+  ctx: CanvasRenderingContext2D
+  texture: THREE.CanvasTexture
+
+  constructor() {
+    this.size = 50
+    this.maxAge = 100
+    this.radius = 0.03 * this.size
+    this.speed = 1 / this.maxAge
+    this.trail = []
+    this.last = null
+    
+    this.canvas = document.createElement('canvas')
+    this.canvas.width = this.size
+    this.canvas.height = this.size
+    this.ctx = this.canvas.getContext('2d')!
+    this.ctx.fillStyle = 'black'
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    
+    this.texture = new THREE.CanvasTexture(this.canvas)
+    this.texture.minFilter = THREE.LinearFilter
+    this.texture.magFilter = THREE.LinearFilter
+  }
+
+  addTouch(point: { x: number; y: number }) {
+    let force = 0
+    let vx = 0
+    let vy = 0
+    const last = this.last
+
+    if (last) {
+      const dx = point.x - last.x
+      const dy = point.y - last.y
+      if (dx === 0 && dy === 0) return
+
+      const dd = dx * dx + dy * dy
+      const d = Math.sqrt(dd)
+      vx = dx / d
+      vy = dy / d
+      force = Math.min(dd * 20000, 2.0)
+    }
+
+    this.last = { x: point.x, y: point.y }
+    this.trail.push({ x: point.x, y: point.y, age: 0, force, vx, vy })
+  }
+
+  update() {
+    this.ctx.fillStyle = 'black'
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
+    this.trail.forEach((point, i) => {
+      point.age++
+      if (point.age >= this.maxAge) {
+        this.trail.splice(i, 1)
+        return
+      }
+
+      const intensity = 1 - point.age / this.maxAge
+      const radius = this.radius * intensity * (1 + point.force * 0.5)
+
+      const gradient = this.ctx.createRadialGradient(
+        point.x * this.size, point.y * this.size, 0,
+        point.x * this.size, point.y * this.size, radius
+      )
+
+      // Desenha o rastro usando cores (Red e Green para velocidade, Blue para intensidade)
+      const r = Math.max(0, Math.min(255, (point.vx + 1) * 127))
+      const g = Math.max(0, Math.min(255, (point.vy + 1) * 127))
+      const b = Math.max(0, Math.min(255, intensity * 100))
+
+      gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${intensity})`)
+      gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`)
+
+      this.ctx.beginPath()
+      this.ctx.fillStyle = gradient
+      this.ctx.arc(point.x * this.size, point.y * this.size, radius, 0, Math.PI * 2)
+      this.ctx.fill()
+    })
+
+    this.texture.needsUpdate = true
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  2. Shaders do Gradiente Líquido                                   */
 /* ------------------------------------------------------------------ */
 
 const vertexShader = /* glsl */ `
   varying vec2 vUv;
-
   void main() {
     vUv = uv;
-    // Bypassa a câmera, criando um quad que cobre a tela inteira perfeitamente
     gl_Position = vec4(position, 1.0);
   }
 `
@@ -23,35 +115,64 @@ const fragmentShader = /* glsl */ `
 
   varying vec2 vUv;
 
-  uniform vec2  uResolution;
-  uniform float uDpr;
   uniform float uTime;
-  uniform vec2  uMouse;           
-  uniform float uMouseInfluence;  
+  uniform vec2 uResolution;
+  uniform float uDpr; // Retornamos o Pixel Ratio para o grid
+  uniform vec3 uColor1;
+  uniform vec3 uColor2;
+  uniform vec3 uColor3;
+  uniform vec3 uColor4;
+  uniform float uGrainIntensity;
+  uniform sampler2D uTouchTexture;
 
-  float hash(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
+  // --- FUNÇÕES DE RUÍDO ---
+  vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+  vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+
+  float snoise(vec3 v){
+    const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+    const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+    vec3 i  = floor(v + dot(v, C.yyy) );
+    vec3 x0 = v - i + dot(i, C.xxx) ;
+    vec3 g = step(x0.yzx, x0.xyz);
+    vec3 l = 1.0 - g;
+    vec3 i1 = min( g.xyz, l.zxy );
+    vec3 i2 = max( g.xyz, l.zxy );
+    vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+    vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+    vec3 x3 = x0 - 1.0 + 3.0 * C.xxx;
+    i = mod(i, 289.0 );
+    vec4 p = permute( permute( permute(
+               i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+             + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+             + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+    float n_ = 1.0/7.0;
+    vec3  ns = n_ * D.wyz - D.xzx;
+    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); // <- A SUA CORREÇÃO AQUI!
+    vec4 x_ = floor(j * ns.z);
+    vec4 y_ = floor(j - 7.0 * x_ );
+    vec4 x = x_ *ns.x + ns.yyyy;
+    vec4 y = y_ *ns.x + ns.yyyy;
+    vec4 h = 1.0 - abs(x) - abs(y);
+    vec4 b0 = vec4( x.xy, y.xy );
+    vec4 b1 = vec4( x.zw, y.zw );
+    vec4 s0 = floor(b0)*2.0 + 1.0;
+    vec4 s1 = floor(b1)*2.0 + 1.0;
+    vec4 sh = -step(h, vec4(0.0));
+    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+    vec3 p0 = vec3(a0.xy,h.x);
+    vec3 p1 = vec3(a0.zw,h.y);
+    vec3 p2 = vec3(a1.xy,h.z);
+    vec3 p3 = vec3(a1.zw,h.w);
+    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+    p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+    m = m * m;
+    return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
   }
 
-  vec2 gravityWarp(vec2 uv, vec2 center, float aspect, float radius, float strength) {
-    vec2 uvA     = vec2(uv.x * aspect, uv.y);
-    vec2 centerA = vec2(center.x * aspect, center.y);
-
-    vec2  delta = uvA - centerA;
-    float dist  = length(delta) + 1e-4;
-
-    float falloff = smoothstep(radius, 0.0, dist);
-    float pull = strength * falloff * falloff / dist;
-    pull = min(pull, radius * 0.9);
-
-    vec2 dir = delta / dist;
-    vec2 warpedA = uvA - dir * pull;
-
-    return vec2(warpedA.x / aspect, warpedA.y);
-  }
-
+  // --- FUNÇÕES DO CRT E DO GRID ---
   vec3 shadowMask(vec2 fragCoord, float cell) {
     float maskDark  = 0.55;
     float maskLight = 1.35;
@@ -80,120 +201,110 @@ const fragmentShader = /* glsl */ `
     return 1.0 - smoothstep(0.0, 2.0, d);
   }
 
-  void main() {
+ void main() {
     vec2 uv = vUv;
-    float aspect = uResolution.x / uResolution.y;
+    
+    // 1. TEXTURA DO MOUSE
+    vec4 touch = texture2D(uTouchTexture, uv);
+    
+    // 2. CORREÇÃO DA DIREÇÃO DA ÁGUA
+    vec2 mouseDistortion = (touch.rg - 0.5) * touch.b * 2.0;
+    vec2 warpedUv = uv + vec2(-mouseDistortion.x, mouseDistortion.y) * 0.05;
 
-    float lensRadius   = 0.10;
-    float lensStrength = 1.5 * uMouseInfluence;
-    vec2 warpedUv = gravityWarp(uv, uMouse, aspect, lensRadius, lensStrength);
+    // 3. A SUA COR DE FUNDO ORIGINAL (Sólida e estática)
+    vec3 bgColor = vec3(0.0588, 0.0902, 0.1647); 
+    
+    // O Blob Fino de Luz do mouse
+    float thinBlob = pow(touch.b, 2.5);
+    bgColor += vec3(0.0, 0.8, 1.0) * thinBlob * 1.5;
 
-    vec2 toMouseA = vec2((uv.x - uMouse.x) * aspect, uv.y - uMouse.y);
-    float distToMouse = length(toMouseA);
-    float lensGlow = smoothstep(lensRadius, 0.0, distToMouse) * uMouseInfluence;
-
-    vec3 baseColor = vec3(0.0588, 0.0902, 0.1647);
-
+    // 4. O GRID DERRETENDO
     float cellPx = 105.0 * uDpr;
-    vec2 warpedFragCoord = warpedUv * uResolution;
+    vec2 warpedFragCoord = warpedUv * uResolution; 
+    
     float grid = gridPattern(warpedFragCoord, cellPx);
-
- // Mantivemos o seu tom arroxeado, mas adicionamos um pouco mais de "luz" a ele
     vec3 lineColor = vec3(0.5, 0.75, 1.0); 
+    float lineAlpha = 0.15; 
     
-    // Subimos de 0.05 para 0.08 (um aumento sutil para não perder a elegância)
-    float lineAlpha = 0.08; 
+    vec3 finalColor = mix(bgColor, lineColor, grid * lineAlpha);
 
-    vec3 color = baseColor;
-    color = mix(color, lineColor, grid * lineAlpha);
-    color += vec3(0.02, 0.03, 0.05) * lensGlow;
-
-  vec2 fragCoord = uv * uResolution;
+    // 5. O VIDRO DO MONITOR (Estático)
+    vec2 fragCoord = uv * uResolution; 
     
-    // Pixels minúsculos (1.5) e textura bem delicada (0.20)
-    vec3 mask = shadowMask(fragCoord, 2.0 * uDpr);
-    color *= mix(vec3(1.0), mask, 1.0); 
+    vec3 mask = shadowMask(fragCoord, 1.0 * uDpr);
+    finalColor *= mix(vec3(0.20), mask, 1.0); 
 
-    // Scanlines super finas (1.0), muito suaves (-2.0) e quase imperceptíveis (0.08)
-    float scan = scanlineWeight(fragCoord, 1.0 * uDpr, 1.0);
-    color *= mix(1.0, scan, 0.1);
+    float scan = scanlineWeight(fragCoord, 1.0 * uDpr, 0.08);
+    finalColor *= mix(1.0, scan, 0.1);
 
-    gl_FragColor = vec4(color, 1.0);
+    // Ruído de TV
+    float grain = fract(sin(dot(uv.xy, vec2(12.9898,78.233)) + uTime) * 43758.5453) - 0.5;
+    finalColor += grain * uGrainIntensity;
+
+    gl_FragColor = vec4(finalColor, 1.0);
   }
 `
 
 /* ------------------------------------------------------------------ */
-/*  Fullscreen shader mesh                                            */
+/*  3. O Componente WebGL que une tudo                                */
 /* ------------------------------------------------------------------ */
 
 function ShaderPlane() {
-  // A Ref conectada diretamente ao material instanciado
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   
-  const targetMouse = useRef(new THREE.Vector2(0.5, 0.5))
-  const smoothMouse = useRef(new THREE.Vector2(0.5, 0.5))
-  const influence = useRef(0)
-  const lastMoveTime = useRef(-10000)
+  // Instancia a classe TouchTexture apenas uma vez
+  const touchTexture = useMemo(() => new TouchTexture(), [])
 
-  // Valores iniciais apenas para a construção do material
-  const initialUniforms = useMemo(() => ({
-    uResolution: { value: new THREE.Vector2(1, 1) },
-    uDpr: { value: 1 },
-    uTime: { value: 0 },
-    uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-    uMouseInfluence: { value: 0 },
-  }), [])
+  // A paleta de cores (Ajuste para a sua identidade visual!)
+  const uniforms = useMemo(() => ({
+  uTime: { value: 0 },
+  uResolution: { value: new THREE.Vector2(1, 1) },
+  uDpr: { value: 1 }, // <--- ADICIONE ESTA LINHA
+  uTouchTexture: { value: touchTexture.texture },
+  // ... resto igual
+    uGrainIntensity: { value: 0.05 }, // Intensidade do granulado
+    
+    // Cores base do seu gradiente
+    uColor1: { value: new THREE.Color('#030A1C') }, // Fundo marinho escuro
+    uColor2: { value: new THREE.Color('#0A1A3D') }, // Azul profundo
+    uColor3: { value: new THREE.Color('#14407A') }, // Azul vibrante
+    uColor4: { value: new THREE.Color('#00F0FF') }, // Destaque em Ciano/Teal
+  }), [touchTexture])
 
+  // Lida com o movimento do mouse
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
+      // Normaliza a coordenada do mouse para o espaço do shader (0.0 a 1.0)
       const x = e.clientX / window.innerWidth
-      const y = 1.0 - e.clientY / window.innerHeight
-      targetMouse.current.set(x, y)
-      lastMoveTime.current = performance.now()
+      const y = e.clientY / window.innerHeight
+      touchTexture.addTouch({ x, y })
     }
 
     window.addEventListener('pointermove', handlePointerMove)
     return () => window.removeEventListener('pointermove', handlePointerMove)
-  }, [])
+  }, [touchTexture])
 
-  useFrame((state, delta) => {
-    // Se o material ainda não renderizou, não faz nada
+  useFrame((state) => {
+    // 1. Atualiza o mini-canvas interno com os novos rastros
+    touchTexture.update()
+
     if (!materialRef.current) return
+    const matUniforms = materialRef.current.uniforms
 
-    // Agora sim! Pegamos os uniforms DIRETAMENTE da instância clonada do Three.js
-    const uniforms = materialRef.current.uniforms
-    
-    // Trava para evitar pulos caso o usuário troque de aba no navegador
-    const dt = Math.min(delta, 0.1)
-
-    // 1. Atualizar Tela/Tempo
-    const dpr = state.viewport.dpr || state.gl.getPixelRatio()
-    uniforms.uResolution.value.set(state.size.width * dpr, state.size.height * dpr)
-    uniforms.uDpr.value = dpr
-    uniforms.uTime.value = state.clock.getElapsedTime()
-
-    // 2. Interpolar suavemente o movimento do mouse
-    smoothMouse.current.lerp(targetMouse.current, 1 - Math.pow(0.001, dt))
-    uniforms.uMouse.value.copy(smoothMouse.current)
-
-    // 3. Controlar o Fade In/Out se não houver movimento
-    const idleTime = (performance.now() - lastMoveTime.current) / 1000
-    const targetInfluence = idleTime < 2.5 ? 1 : 0
-    const lerpRate = 1 - Math.pow(0.0001, dt)
-    
-    influence.current += (targetInfluence - influence.current) * lerpRate
-    uniforms.uMouseInfluence.value = influence.current
+    // 2. Atualiza os dados do Shader
+    matUniforms.uTime.value = state.clock.getElapsedTime()
+    matUniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
   })
 
   return (
-    <mesh frustumCulled={false}>
-      {/* Geometria 2x2 com quad NDC preenche a tela perfeitamente */}
+    <mesh>
+      {/* Geometria 2x2 preenche a tela inteira com o hack de vertexShader */}
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        uniforms={initialUniforms}
+        uniforms={uniforms}
         depthWrite={false}
         depthTest={false}
       />
@@ -202,10 +313,10 @@ function ShaderPlane() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Public component                                                  */
+/*  4. O Componente Exportado (Pronto para o page.tsx)                */
 /* ------------------------------------------------------------------ */
 
-export function GridBackground() {
+export default function LiquidGradient() {
   return (
     <Canvas
       orthographic
@@ -224,5 +335,3 @@ export function GridBackground() {
     </Canvas>
   )
 }
-
-export default GridBackground

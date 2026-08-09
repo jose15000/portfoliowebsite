@@ -1,0 +1,1 @@
+export const loadingPlaceholders = ["Thinking", "Fathoming", "Gathering knowledge", "Searching"]

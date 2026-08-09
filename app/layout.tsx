@@ -3,7 +3,7 @@ import { Cormorant, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import GridBackground from "@/components/GridBackground";
-import Nav from "@/components/Nav";
+import Nav from "@/components/NavBar/Nav";
 
 const cormorant = Cormorant({
   subsets: ["latin"],
@@ -53,10 +53,11 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${ibmPlexMono.variable} smooth-wrapper`}>
       <body className="smooth-content">
         <Nav/>
-        <SmoothScrollProvider>
-          
+      <SmoothScrollProvider>
+
         {children}
-        </SmoothScrollProvider>
+      </SmoothScrollProvider>
+      
         </body>
     </html>
     </>

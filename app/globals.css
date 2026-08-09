@@ -30,7 +30,28 @@
 }
 
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
 
+.animate-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    theme('colors.slate.600') 25%,
+    theme('colors.teal.300') 50%,
+    theme('colors.slate.600') 75%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text; 
+  background-clip: text;
+  animation: shimmer 1.5s infinite linear; 
+}
 
 @theme {
   --font-display: "Cormorant", "EB Garamond", Times, serif;

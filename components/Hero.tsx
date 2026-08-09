@@ -32,7 +32,7 @@ export default function Hero() {
     };
   return (
 
-    <section className="font-display flex mb-0 flex-col items-center text-center md:text-start justify-center lg:flex-row gap-10 items-center justify-between min-h-[80vh] w-full lg:max-w-6xl lg:mx-auto px-2 lg:px-6 lg:py-12">
+    <section className="font-display flex mb-0 flex-col items-center text-center md:text-start justify-center lg:flex-row gap-10 items-center justify-between min-h-[80vh] w-full px-2 lg:px-6 lg:py-12">
       <div className="w-full lg:flex-1">
         <h1 className="text-5xl  font-medium md:text-6xl lg:text-7xl xl:text-8xl mb-4 text-slate-200">
           José Henrique.
@@ -42,8 +42,7 @@ export default function Hero() {
         </h2>
         <p className="text-slate-400 font-times text-sm md:text-base mb-8 leading-relaxed max-w-xl">
           Building systems that think. Focused on AI agents, automation and
-          scalable architectures. Currently studying CS at Universidade
-          Tiradentes and shipping real products.
+          scalable architectures. Shipping real products.
         </p>
 
           <div className="flex flex-row gap-4 md:gap-10 items-center justify-center md:justify-start">
