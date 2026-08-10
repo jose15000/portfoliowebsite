@@ -93,61 +93,64 @@ return (
               Wanna Know more? Ask AI!
             </h1>
 
-            <ChatModal className="w-full md:w-4/6 h-full md:h-[60vh] flex-col md:flex-row gap-4 overflow-visible">
+            {/* CORREÇÃO 1: Adicionado o "h" que faltava em md:h-[60vh] */}
+            <ChatModal className="flex w-full  h-[40vh] min-h-[500px] md:h-[60vh] flex-col md:flex-row gap-4 overflow-visible">
                 
-                <div className="flex flex-col flex-1 gap-4">
+                {/* CORREÇÃO 2: ADICIONADO min-h-0 AQUI! Sem isso, o flexbox pai esmaga o scroll dos filhos */}
+                <div className="flex flex-col flex-1 min-h-0 gap-4">
                     
                     <ChatBody className="flex flex-col flex-1 min-h-0 px-4 py-3 overflow-hidden">
 
-                    <div className="shrink-0">
-                        <ChatHeader/>
-                    </div>
+                        <div className="shrink-0">
+                            <ChatHeader/>
+                        </div>
 
                         <div ref={messagesContainerRef} className="flex flex-col flex-1 min-h-0 gap-2 mt-4 overflow-y-auto">
                             <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
-                             <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
-                             <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
+                            <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
+                            <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
+                            <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
                             
-                            
-                        <ChatMessages message={"Hello! I'm the digital representation of José Henrique's portfolio. You can ask me about his projects, tech stack, or experience."} role="system"/>
                             {messages.map((message) => (
                                 <ChatMessages key={message.id} message={message.message} role={message.role}/>
                             ))}
+                            
                             {loading && (
-                                    <div className="shrink-0 mt-4">
-
-                                        <div> 
-                                            <div className="animate-shimmer-text font-monospace text-sm">
-                                                {loadingMessage}
-                                            </div>
+                                <div className="shrink-0 mt-4">
+                                    <div> 
+                                        <div className="animate-shimmer-text font-monospace text-sm">
+                                            {loadingMessage}
                                         </div>
                                     </div>
-                                )}
+                                </div>
+                            )}
 
-                        <div ref={ref}/>
+                            <div ref={ref}/>
                         </div>
                        
                     </ChatBody>
 
-                    <div className="flex flex-row justify-between gap-2">
-                    <ChatBody className="px-3 w-full py-3 shrink-0 w-fit">
-                        <span>merda</span>
-                        <ChatInput isLoading={loading} onSendMessage={request}/>
-                    </ChatBody>
-                     <ChatBody key="picker-container" className="shrink-0 px-2 size-fit py-2 gap-4">
-                        <AvatarPicker className="w-full" defaultAvatar="/images/pfps/Beach Chairs.png" />
-                    </ChatBody>
+                    <div className="flex flex-row justify-between gap-2 shrink-0">
+                        {/* CORREÇÃO 3: Removido o w-fit conflitante, deixado apenas o w-full */}
+                        <ChatBody className="px-3 w-full py-3 shrink-0">
+                            <span>merda</span>
+                            <ChatInput isLoading={loading} onSendMessage={request}/>
+                        </ChatBody>
+                        <ChatBody key="picker-container" className="shrink-0 px-2 size-fit py-2 gap-4 hidden md:block">
+                            <AvatarPicker className="w-full" defaultAvatar="/images/pfps/Beach Chairs.png" />
+                        </ChatBody>
                     </div>
 
                 </div>
 
-                <div className="flex flex-col items-center justify-between">
+                <div className="flex flex-row md:flex-col items-center justify-center md:justify-between shrink-0">
+                    <ChatBody key="picker-container" className="md:flex-1 shrink-0 px-2 size-fit py-2 gap-4 md:hidden block">
+                            <AvatarPicker className="w-full" defaultAvatar="/images/pfps/Beach Chairs.png" />
+                        </ChatBody>
                     <ChatBody key="image-container" className="px-2 size-fit w-fit py-2 gap-4">
                         <UserPictures src={"/images/me.png"} isUser={false}/>
                     </ChatBody>
-             
                 </div>
-
 
             </ChatModal>
         </div>
