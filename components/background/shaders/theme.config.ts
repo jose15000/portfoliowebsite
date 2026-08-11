@@ -14,8 +14,8 @@ export const THEMES = {
   aqua: {
     fragment: aquaFragmentShader,
     uniforms: {
-      uColorDark: { value: new THREE.Color('#0022ff') },
-      uColorLight: { value: new THREE.Color('#00eeff') },
+      uColorDark: { value: new THREE.Color('#17185a') },
+      uColorLight: { value: new THREE.Color('#557cc4') },
     }
   }
 };

@@ -1,10 +1,14 @@
 "use client"
 
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
-import { useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ThemeName, THEMES } from './background/shaders/theme.config'
+import { AquaGamePhysics } from './AquaGame'
+import { useFBO } from '@react-three/drei'
+import { createPortal } from '@react-three/fiber'
+
 
 /* ------------------------------------------------------------------ */
 /*  1. A Classe TouchTexture (O segredo da distorção)                 */
@@ -112,73 +116,106 @@ const vertexShader = /* glsl */ `
   }
 `
 
-function ShaderPlane({theme}: {theme: ThemeName}) {
+/* ------------------------------------------------------------------ */
+/*  4. O Componente de Exportação                                     */
+/* ------------------------------------------------------------------ */
+// <-- Importe isso lá no topo!
 
-
-  const activeTheme = THEMES[theme] 
+function ShaderPlane({ theme = 'aqua' }: { theme?: ThemeName }) {
+  const bgTexture = useTexture('/images/meu-fundo.png')
+  const activeTheme = THEMES[theme] || THEMES['aqua'] 
   const materialRef = useRef<THREE.ShaderMaterial>(null)
- 
+ const { viewport } = useThree()
   const touchTexture = useMemo(() => new TouchTexture(), [])
+
+  // 1. CRIAMOS UMA CENA INVISÍVEL (Onde a física pode rodar sem quebrar)
+  
+  const [virtualScene] = useState(() => new THREE.Scene())
+
+  // 2. CRIAMOS A "CÂMERA DE SEGURANÇA" QUE VAI FILMAR A CENA
+  const renderTarget = useFBO()
 
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uResolution: { value: new THREE.Vector2(1, 1) },
     uTouchTexture: { value: touchTexture.texture },
-    uDpr: {value: 1},
-    uGrainIntensity: {value: 0.05},
-...activeTheme.uniforms,
-  
-  }), [touchTexture, activeTheme])
-
+    uDpr: { value: 1 },
+    uGrainIntensity: { value: 0.05 },
+    
+    // Passamos o vídeo ao vivo da nossa câmera pro Shader!
+    uBackgroundImage: { value: renderTarget.texture },
+    ...activeTheme.uniforms,
+  }), [touchTexture, activeTheme, renderTarget])
 
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
-      // Normaliza a coordenada do mouse para o espaço do shader (0.0 a 1.0)
       const x = e.clientX / window.innerWidth
       const y = e.clientY / window.innerHeight
       touchTexture.addTouch({ x, y })
     }
-
     window.addEventListener('pointermove', handlePointerMove)
     return () => window.removeEventListener('pointermove', handlePointerMove)
   }, [touchTexture])
 
   useFrame((state) => {
-    // 1. Atualiza o mini-canvas interno com os novos rastros
     touchTexture.update()
+
+    // 3. A MÁGICA ACONTECE AQUI NO LOOP DE RENDERIZAÇÃO:
+    // a) Mandamos o Three.js olhar pra nossa cena invisível e gravar no FBO
+    state.gl.setRenderTarget(renderTarget)
+    state.gl.render(virtualScene, state.camera)
+    // b) Devolvemos o controle pra tela principal
+    state.gl.setRenderTarget(null)
 
     if (!materialRef.current) return
     const matUniforms = materialRef.current.uniforms
-
-    // 2. Passa o tempo e a resolução da tela para o Shader
     matUniforms.uTime.value = state.clock.getElapsedTime()
     matUniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
   })
 
   return (
-    <mesh>
-      <planeGeometry args={[2, 2]} />
-      <shaderMaterial
-        key={theme}
-        ref={materialRef}
-        vertexShader={vertexShader}
-        fragmentShader={activeTheme.fragment}
-        uniforms={uniforms}
-        depthWrite={false}
-        depthTest={false}
-      />
-    </mesh>
+    <>
+      {/* 
+        O PORTAL: Tudo que está aqui dentro existe no mundo 3D, 
+        mas só é visto pela nossa "câmera de segurança" (virtualScene).
+        Como não está "preso", a física do Rapier funciona perfeitamente!
+      */}
+      {createPortal(
+        <group>
+          {/* A Sua Imagem de Fundo Estática (Aumentei o tamanho pra garantir que cubra a tela toda) */}
+          <mesh scale={[viewport.width, viewport.height, 1]}>
+            <planeGeometry args={[1, 1]} /> 
+            <meshBasicMaterial map={bgTexture} side={THREE.DoubleSide} />
+          </mesh>
+
+          {/* Os peixes caindo na frente da imagem */}
+          {theme === 'aqua' && <AquaGamePhysics />}
+        </group>,
+        virtualScene
+      )}
+
+      {/* A TELA FINAL COM O SHADER DE CRT E DISTORÇÃO */}
+      <mesh  >
+        <planeGeometry args={[2, 2]} />
+        <shaderMaterial
+          key={theme}
+          ref={materialRef}
+          vertexShader={vertexShader}
+          fragmentShader={activeTheme.fragment}
+          uniforms={uniforms}
+          depthWrite={false}
+          depthTest={false}
+        />
+      </mesh>
+    </>
   )
 }
-
 /* ------------------------------------------------------------------ */
 /*  4. O Componente de Exportação                                     */
 /* ------------------------------------------------------------------ */
-export default function LiquidGradient() {
+export default function LiquidGradient({ theme = 'aqua' }: { theme?: ThemeName }) {
   return (
     <Canvas
-      orthographic
-      camera={{ position: [0, 0, 1] }}
       gl={{ antialias: false, powerPreference: 'high-performance' }}
       style={{
         position: 'fixed',
@@ -186,10 +223,12 @@ export default function LiquidGradient() {
         width: '100vw',
         height: '100vh',
         zIndex: -1,
-        pointerEvents: 'none',
       }}
     >
-      <ShaderPlane theme={"dark"}/>
+      <Suspense fallback={null}>
+        {/* Agora o ShaderPlane contém todo o universo dentro dele! */}
+        <ShaderPlane theme={theme} />
+      </Suspense>
     </Canvas>
   )
 }
