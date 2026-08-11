@@ -121,7 +121,7 @@ const vertexShader = /* glsl */ `
 /* ------------------------------------------------------------------ */
 // <-- Importe isso lá no topo!
 
-function ShaderPlane({ theme = 'aqua' }: { theme?: ThemeName }) {
+function ShaderPlane({ theme = "aqua" }: { theme?: ThemeName }) {
   const bgTexture = useTexture('/images/meu-fundo.png')
   const activeTheme = THEMES[theme] || THEMES['aqua'] 
   const materialRef = useRef<THREE.ShaderMaterial>(null)
@@ -175,11 +175,6 @@ function ShaderPlane({ theme = 'aqua' }: { theme?: ThemeName }) {
 
   return (
     <>
-      {/* 
-        O PORTAL: Tudo que está aqui dentro existe no mundo 3D, 
-        mas só é visto pela nossa "câmera de segurança" (virtualScene).
-        Como não está "preso", a física do Rapier funciona perfeitamente!
-      */}
       {createPortal(
         <group>
           {/* A Sua Imagem de Fundo Estática (Aumentei o tamanho pra garantir que cubra a tela toda) */}
@@ -213,7 +208,7 @@ function ShaderPlane({ theme = 'aqua' }: { theme?: ThemeName }) {
 /* ------------------------------------------------------------------ */
 /*  4. O Componente de Exportação                                     */
 /* ------------------------------------------------------------------ */
-export default function LiquidGradient({ theme = 'aqua' }: { theme?: ThemeName }) {
+export default function LiquidGradient({ theme = "aqua" }: { theme?: ThemeName }) {
   return (
     <Canvas
       gl={{ antialias: false, powerPreference: 'high-performance' }}
@@ -226,7 +221,6 @@ export default function LiquidGradient({ theme = 'aqua' }: { theme?: ThemeName }
       }}
     >
       <Suspense fallback={null}>
-        {/* Agora o ShaderPlane contém todo o universo dentro dele! */}
         <ShaderPlane theme={theme} />
       </Suspense>
     </Canvas>

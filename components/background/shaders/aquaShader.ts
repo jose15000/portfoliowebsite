@@ -58,12 +58,12 @@ export const aquaFragmentShader = /* glsl */ `
     vec3 mask = shadowMask(fragCoord, 1.0 * uDpr);
     finalColor *= mix(vec3(0.20), mask, 1.0); 
 
-    float scan = scanlineWeight(fragCoord, 1.0 * uDpr, 0.08);
+    float scan = scanlineWeight(fragCoord, 1.0 * uDpr, 0.02);
     finalColor *= mix(1.0, scan, 0.1);
 
     float grain = fract(sin(dot(uv.xy, vec2(12.9898,78.233)) + uTime) * 43758.5453) - 0.5;
     finalColor += grain * uGrainIntensity;
-    
+
     gl_FragColor = vec4(finalColor, 1.0);
   }
 `;

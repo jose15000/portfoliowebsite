@@ -8,7 +8,7 @@ import { backgroundComponents } from '@/utils/backgroundComponents'
 import { useFrame } from '@react-three/fiber'
 
 
-function FishCutout({ textureUrl, startPosition}: { textureUrl: string, startPosition: [number, number, number]}) {
+function FishCutout({ textureUrl, startPosition, id, onRemove}: { id: string, textureUrl: string, startPosition: [number, number, number], onRemove: (idToRemove: string) => void}) {
   const rigidBodyRef = useRef<RapierRigidBody>(null)
   const texture = useTexture(textureUrl)
   texture.colorSpace = THREE.SRGBColorSpace
@@ -30,13 +30,11 @@ function FishCutout({ textureUrl, startPosition}: { textureUrl: string, startPos
     if (!rigidBodyRef.current) return
     const t = state.clock.getElapsedTime() + randomFactor.current
 
-    // Forças 10x menores para não anularem a gravidade!
-    const driftX = Math.sin(t) * 0.005 
-    const floatY = Math.cos(t * 0.5) * 0.001 
+    const driftX = Math.sin(t) * 0.002 
 
-    rigidBodyRef.current.applyImpulse({ x: driftX, y: floatY, z: 0 }, true)
+    // y: 0 para parar de lutar contra a gravidade!
+    rigidBodyRef.current.applyImpulse({ x: driftX, y: 0, z: 0 }, true)
   })
-
   const handlePuff = (e: any) => {
     e.stopPropagation()
     if (rigidBodyRef.current) {
@@ -46,23 +44,23 @@ function FishCutout({ textureUrl, startPosition}: { textureUrl: string, startPos
   }
 
   return (
-    <RigidBody 
+   <RigidBody 
       ref={rigidBodyRef}
       position={startPosition}
       colliders={false} 
-      restitution={0.6}
+      restitution={0.4} // Quica um pouco menos para parecer que está na água
       friction={0.2}
       enabledTranslations={[true, true, false]} 
       enabledRotations={[false, false, true]}
-      linearDamping={1.2}  
-      angularDamping={1.5} // <-- Freia o giro aos poucos para não parecerem hélices de helicóptero
+      linearDamping={2.5}  // <-- O SEGREDO: O atrito da água freando a queda
+      angularDamping={2.0} // <-- Freia o giro para não parecer um pião
     >
-      <CuboidCollider args={[0.75, 0.75, 0.05]} /> 
+      <CuboidCollider args={[0.4, 0.4, 0.05]} /> 
 
       <group onClick={handlePuff}>
         {/* MALHA PRINCIPAL */}
         <mesh>
-          <planeGeometry args={[1.5, 1.5]} />
+          <planeGeometry args={[0.8, 0.8]} />
           <meshBasicMaterial map={texture} transparent alphaTest={0.1} side={THREE.DoubleSide} />
         </mesh>
 
@@ -80,54 +78,55 @@ function FishCutout({ textureUrl, startPosition}: { textureUrl: string, startPos
 export function AquaGamePhysics() {
   const [fishes, setFishes] = useState<{ id: string; x: number; z: number; pictureUrl: string }[]>([])
 
+  // 1. A FUNÇÃO QUE DESTRÓI O PEIXE
+  const handleRemoveFish = (idToRemove: string) => {
+    setFishes((prev) => prev.filter((fish) => fish.id !== idToRemove))
+  }
+
   useEffect(() => {
     let timeout: NodeJS.Timeout
-
     const spawnFish = () => {
       const amountToSpawn = Math.floor(Math.random() * 3) + 1
-      const randomIndex = Math.floor(Math.random() * backgroundComponents.length)
-
-      const newFishes = Array.from({ length: amountToSpawn }).map(() => ({
-        id: Math.random().toString(36).substring(2, 9), 
-        x: (Math.random() - 0.5) * 20,                  
-        z: Math.random() * 0.1,           
-        pictureUrl: backgroundComponents[randomIndex]          
-      }))
-
-      setFishes((prevFishes) => {
-        const combined = [...prevFishes, ...newFishes]
-
-        return combined.slice(-20)
+      
+      const newFishes = Array.from({ length: amountToSpawn }).map(() => {
+        const randomIndex = Math.floor(Math.random() * backgroundComponents.length)
+        return {
+          id: Math.random().toString(36).substring(2, 9), 
+          x: (Math.random() - 0.5) * 16,                  
+          z: Math.random() * 0.1,           
+          pictureUrl: backgroundComponents[randomIndex]          
+        }
       })
+
+      // 2. AGORA SÓ ADICIONAMOS OS PEIXES NOVOS (Sem slice!)
+      setFishes((prev) => [...prev, ...newFishes])
 
       const nextSpawnTime = Math.random() * 3000 + 1000
       timeout = setTimeout(spawnFish, nextSpawnTime)
     }
-    timeout = setTimeout(spawnFish, 2000)
-
-    // Limpa o cronômetro se o usuário sair da página
+    
+    timeout = setTimeout(spawnFish, 500)
     return () => clearTimeout(timeout)
   }, [])
 
   return (
-    <Physics gravity={[0, -0.4, 0]}> 
+    <Physics gravity={[0, -4, 0]}> 
       
-      {/* PAREDES E CHÃO */}
-      <RigidBody type="fixed" position={[0, -12, 0]}>
-        <CuboidCollider args={[20, 1, 5]} />
-      </RigidBody>
-      <RigidBody type="fixed" position={[-15, 0, 0]}>
+      {/* 3. APENAS PAREDES LATERAIS (Apagamos o chão para eles caírem livremente) */}
+      <RigidBody type="fixed" position={[-12, 0, 0]}>
         <CuboidCollider args={[1, 20, 5]} />
       </RigidBody>
-      <RigidBody type="fixed" position={[15, 0, 0]}>
+      <RigidBody type="fixed" position={[12, 0, 0]}>
         <CuboidCollider args={[1, 20, 5]} />
       </RigidBody>
 
       {fishes.map((fish) => (
         <FishCutout 
           key={fish.id} 
+          id={fish.id} // <-- Passando o ID para o peixe se conhecer!
           textureUrl={fish.pictureUrl}
-          startPosition={[fish.x, 15, fish.z]} 
+          startPosition={[fish.x, 8, fish.z]} 
+          onRemove={handleRemoveFish} // <-- Passando o botão de autodestruição!
         />
       ))}
       

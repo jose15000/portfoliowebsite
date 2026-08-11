@@ -32,15 +32,20 @@ export default function Hero() {
     };
   return (
 
-    <section className="font-display flex mb-0 flex-col items-center text-center md:text-start justify-center lg:flex-row gap-10 items-center justify-between min-h-[80vh] w-full px-2 lg:px-6 lg:py-12">
-      <div className="w-full lg:flex-1">
-        <h1 className="text-5xl  font-medium md:text-6xl lg:text-7xl xl:text-8xl mb-4 text-slate-200">
+    <section className="font-display flex mb-0 flex-col items-center text-center md:text-start justify-center lg:flex-row gap-10 items-center justify-between min-h-[80vh] w-full px-2 lg:px-6 lg:py-12"
+    style={{
+    // Cria um contorno suave escuro que separa o texto do ruído do CRT
+    textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.5)'
+  }}
+    >
+      <div className="w-full lg:flex-1 text-[#1E3A8A]">
+        <h1 className="text-5xl font-medium md:text-6xl lg:text-7xl xl:text-8xl mb-4">
           José Henrique.
         </h1>
-        <h2 className="italic font-times text-teal-300 text-2xl md:text-3xl lg:text-4xl mb-6 leading-tight">
+        <h2 className="italic font-times text-[#1E3A8A] text-2xl md:text-3xl lg:text-4xl mb-6 leading-tight">
           Full-Stack Developer
         </h2>
-        <p className="text-slate-400 font-times text-sm md:text-base mb-8 leading-relaxed max-w-xl">
+        <p className="text-[#1E3A8A] font-semibold font-times text-sm md:text-base mb-8 leading-relaxed max-w-xl">
           Building systems that think. Focused on AI agents, automation and
           scalable architectures. Shipping real products.
         </p>
@@ -54,7 +59,7 @@ export default function Hero() {
         <div>
 
         
-        <a href="#" className="group text-slate-500 transition-colors text-lg">
+        <a href="#chat" className="group text-slate-500 transition-colors text-lg">
           <span className="group-hover:text-amber-400 transition-colors font-semibold font-times ">[</span>
           <span className="text-amber-400 px-1">
           Talk to AI Me
