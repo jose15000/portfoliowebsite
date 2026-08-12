@@ -21,6 +21,8 @@
 
 }
 
+@variant dark (&:where(.dark, .dark *));
+@variant aqua (&:where(.aqua, .aqua *));
 
 @theme {
   --windows-base-blue: #0A246A;
@@ -110,13 +112,22 @@ h1 {
   font-family: var(--font-ui);
 }
 
-.sub-nav a {
+.dark .sub-nav a, 
+.dark .sub-nav button {
   color: var(--accent-teal-300);
   text-decoration: none;
   margin: 0 8px;
+  
 }
 
-.sub-nav a:hover {
+.aqua .sub-nav a, 
+.aqua .sub-nav button {
+  color: var(--background-slate-900);
+  font-weight: 700;
+  
+}
+
+.sub-nav button, a:hover {
   text-decoration: underline;
   color: var(--text-slate-200);
 }

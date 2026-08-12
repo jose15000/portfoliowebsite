@@ -8,7 +8,7 @@ import { ThemeName, THEMES } from './background/shaders/theme.config'
 import { AquaGamePhysics } from './AquaGame'
 import { useFBO } from '@react-three/drei'
 import { createPortal } from '@react-three/fiber'
-
+import { useThemeStore } from '@/store/useThemeStore'
 
 /* ------------------------------------------------------------------ */
 /*  1. A Classe TouchTexture (O segredo da distorção)                 */
@@ -24,7 +24,7 @@ class TouchTexture {
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
   texture: THREE.CanvasTexture
-
+  
   constructor() {
     this.size = 50
     this.maxAge = 100
@@ -44,62 +44,61 @@ class TouchTexture {
     this.texture.minFilter = THREE.LinearFilter
     this.texture.magFilter = THREE.LinearFilter
   }
-
+  
   addTouch(point: { x: number; y: number }) {
     let force = 0
     let vx = 0
     let vy = 0
     const last = this.last
-
+    
     if (last) {
       const dx = point.x - last.x
       const dy = point.y - last.y
       if (dx === 0 && dy === 0) return
-
+      
       const dd = dx * dx + dy * dy
       const d = Math.sqrt(dd)
       vx = dx / d
       vy = dy / d
       force = Math.min(dd * 20000, 2.0)
     }
-
+    
     this.last = { x: point.x, y: point.y }
     this.trail.push({ x: point.x, y: point.y, age: 0, force, vx, vy })
   }
-
+  
   update() {
     this.ctx.fillStyle = 'black'
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-
+    
     this.trail.forEach((point, i) => {
       point.age++
       if (point.age >= this.maxAge) {
         this.trail.splice(i, 1)
         return
       }
-
+      
       const intensity = 1 - point.age / this.maxAge
       const radius = this.radius * intensity * (1 + point.force * 0.5)
-
+      
       const gradient = this.ctx.createRadialGradient(
         point.x * this.size, point.y * this.size, 0,
         point.x * this.size, point.y * this.size, radius
       )
-
+      
       // Desenha o rastro usando cores (Red e Green para velocidade, Blue para intensidade)
       const r = Math.max(0, Math.min(255, (point.vx + 1) * 127))
       const g = Math.max(0, Math.min(255, (point.vy + 1) * 127))
       const b = Math.max(0, Math.min(255, intensity * 100))
-
+      
       gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${intensity})`)
       gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`)
-
       this.ctx.beginPath()
       this.ctx.fillStyle = gradient
       this.ctx.arc(point.x * this.size, point.y * this.size, radius, 0, Math.PI * 2)
       this.ctx.fill()
     })
-
+    
     this.texture.needsUpdate = true
   }
 }
@@ -108,6 +107,7 @@ class TouchTexture {
 /*  2. Shaders do Gradiente Líquido                                   */
 /* ------------------------------------------------------------------ */
 
+
 const vertexShader = /* glsl */ `
   varying vec2 vUv;
   void main() {
@@ -115,7 +115,6 @@ const vertexShader = /* glsl */ `
     gl_Position = vec4(position, 1.0);
   }
 `
-
 /* ------------------------------------------------------------------ */
 /*  4. O Componente de Exportação                                     */
 /* ------------------------------------------------------------------ */
@@ -205,10 +204,13 @@ function ShaderPlane({ theme = "aqua" }: { theme?: ThemeName }) {
     </>
   )
 }
+
 /* ------------------------------------------------------------------ */
 /*  4. O Componente de Exportação                                     */
 /* ------------------------------------------------------------------ */
-export default function LiquidGradient({ theme = "aqua" }: { theme?: ThemeName }) {
+export default function LiquidGradient({ theme: propTheme }: { theme?: ThemeName }) {
+
+  const getTheme = useThemeStore((state) => state.theme)
   return (
     <Canvas
       gl={{ antialias: false, powerPreference: 'high-performance' }}
@@ -221,7 +223,7 @@ export default function LiquidGradient({ theme = "aqua" }: { theme?: ThemeName }
       }}
     >
       <Suspense fallback={null}>
-        <ShaderPlane theme={theme} />
+        <ShaderPlane theme={getTheme} />
       </Suspense>
     </Canvas>
   )

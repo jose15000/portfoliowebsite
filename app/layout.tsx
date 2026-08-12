@@ -4,6 +4,7 @@ import "./globals.css";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import GridBackground from "@/components/GridBackground";
 import Nav from "@/components/NavBar/Nav";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const cormorant = Cormorant({
   subsets: ["latin"],
@@ -53,10 +54,14 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${ibmPlexMono.variable} smooth-wrapper`}>
       <body className="smooth-content">
         <Nav/>
+
+      <ThemeProvider>
+
       <SmoothScrollProvider>
 
         {children}
       </SmoothScrollProvider>
+      </ThemeProvider>
       
         </body>
     </html>

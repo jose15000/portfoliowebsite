@@ -126,8 +126,7 @@ export const gridFragmentShader = /* glsl */ `
     finalColor *= mix(1.0, scan, 0.1);
 
     // Ruído de TV
-    float grain = fract(sin(dot(uv.xy, vec2(12.9898,78.233)) + uTime) * 43758.5453) - 0.5;
-    finalColor += grain * uGrainIntensity;
+   
 
     gl_FragColor = vec4(finalColor, 1.0);
   }
