@@ -120,6 +120,7 @@ h1 {
   
 }
 
+
 .aqua .sub-nav a, 
 .aqua .sub-nav button {
   color: var(--background-slate-900);
@@ -131,6 +132,35 @@ h1 {
   text-decoration: underline;
   color: var(--text-slate-200);
 }
+
+/* 
+  Y2K "Molded Plastic" Blobs 
+  Valores próximos a 50% criam ovais perfeitos e polidos, 
+  sem pontas agudas ou aspecto "derretido".
+*/
+
+.blob-1 {
+  /* Vibe do visor esquerdo: Um oval levemente mais gordinho em cima */
+  border-radius: 50% 50% 45% 55% / 55% 55% 45% 45%;
+}
+
+.blob-2 {
+  /* Vibe dos botões da direita: Um oval ligeiramente inclinado */
+  border-radius: 45% 55% 50% 50% / 50% 50% 55% 45%;
+}
+
+.blob-3 {
+  /* O clássico "Pílula Orgânica": Quase simétrico, mas com um micro-respiro */
+  border-radius: 48% 52% 49% 51% / 50% 50% 50% 50%;
+}
+
+
+.blob-mp3 {
+  border-radius: 100% 40% 30% 70% / 60% 40% 60% 40%;
+}
+
+/* Grid Técnico Y2K/Frutiger Aero */
+
 
 section {
   width: 100%;
@@ -146,9 +176,8 @@ section {
 }
 
 
-/* ===== AQUA TEAL BUTTON (macOS Aqua-inspired) ===== */
-  .aqua-btn {
-    font-family: "myriad-pro", system-ui;
+html.aqua .aqua-btn {
+    font-family: "Geneva", system-ui;
     border-radius: 1000px;
     position: relative;
     overflow: hidden;
@@ -156,27 +185,25 @@ section {
     outline: none;
     border: none;
  
-    background: linear-gradient(rgba(20, 130, 115, 0.625), rgba(45, 212, 191, 0.625));
     box-shadow: 0 0.375em 0.5em rgba(0, 0, 0, 0.3),
                 0 0.125em 0.125em rgba(15, 118, 110, 0.5),
                 inset 0 0.25em 0.25em rgba(0, 30, 27, 0.5),
                 inset 0 0.375em 0.5em 0.25em #5EEAD4;
   }
  
-  .aqua-btn:focus,
-  .aqua-btn:active {
+  html.aqua .aqua-btn:focus,
+  html.aqua .aqua-btn:active {
     box-shadow: 0 0.375em 0.5em rgba(0, 0, 0, 0.3),
                 0 0.125em 0.125em rgba(15, 118, 110, 0.5),
                 inset 0 0.25em 0.25em rgba(0, 30, 27, 0.5),
-                inset 0 0.375em 0.5em 0.25em #5EEAD4,
                 0 0 0.5em rgba(20, 184, 166, 0.5);
   }
 
-  .aqua-btn:hover {
+  html.aqua .aqua-btn:hover {
     cursor: pointer;
   }
  
-  .aqua-btn::before {
+  html.aqua .aqua-btn::before {
     content: '';
     position: absolute;
     left: 50%;
@@ -191,7 +218,7 @@ section {
   }
  
   /* bottom glow */
-  .aqua-btn::after {
+  html.aqua .aqua-btn::after {
     content: '';
     position: absolute;
     left: 50%;
@@ -204,7 +231,7 @@ section {
     filter: blur(3px);
   }
  
-  .aqua-btn a {
+  html.aqua .aqua-btn a {
     position: relative;
     top: -1px;
     z-index: 1;
