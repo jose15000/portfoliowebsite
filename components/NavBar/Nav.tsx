@@ -5,7 +5,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import gsap from "gsap";
 import { Sandwich } from "./Sandwich";
 import { useScrolleStore } from "@/store/useScroll";
-import { ThemeToggler } from "./ThemeToggler/ThemeToggler";
+import { useRouter } from "next/navigation";
 
 export default function Nav() {
   const [isBlurActive, setIsBlurActive] = useState(false);
@@ -17,10 +17,14 @@ export default function Nav() {
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
+    { name: "Articles", href: "/articles"},
     { name: "Contact", href: "#contact" },
   ];
 
 const setScrolling = useScrolleStore((state) => state.setScrolling);
+
+const router = useRouter();
+
 
 useEffect(() => {
   let scrollTimeout: ReturnType<typeof setTimeout>;
@@ -104,24 +108,23 @@ useEffect(() => {
   };
 
   return (
-    <>
+    <div className="flex flex-row justify-between">
       <a
         href="#hero"
         onClick={(e) => handleNavClick(e, "#hero")}
-        className="fixed left-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full font-times font-bold text-white"
+        className="fixed left-4 top-4 z-50 flex h-9 w-auto items-center justify-start rounded-full font-times font-bold text-white"
       >
-        JH
+        josehenriquedev
       </a>
 
       <nav className="fixed left-1/2 top-4 z-50 hidden -translate-x-1/2 md:flex">
         <div
           className={`sub-nav flex items-center rounded-lg px-2 py-3 transition-all duration-300 ${
-            isBlurActive ? "dark:bg-slate-900/40 light:bg-white/1 shadow-sm backdrop-blur-md" : "bg-transparent"
+            isBlurActive ? "bg-slate-900/40 shadow-sm backdrop-blur-md" : "bg-transparent"
           }`}
         >
           {tabs.map((tab) => (
             <a
-              className="[.aqua&]:text-accent-teal-300"
               key={tab.name}
               href={tab.href}
               onClick={(e) => handleNavClick(e, tab.href)}
@@ -129,8 +132,6 @@ useEffect(() => {
               {tab.name}
             </a>
           ))}
-      
-      <ThemeToggler/>
         </div>
       </nav>
 
@@ -142,6 +143,6 @@ useEffect(() => {
         onSelect={handleNavClick}
       />
 
-    </>
+    </div>
   );
 }

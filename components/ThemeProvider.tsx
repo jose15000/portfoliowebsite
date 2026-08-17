@@ -9,15 +9,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const root = document.documentElement
 
-    root.classList.remove('light', 'dark', 'aqua') 
-
-    root.classList.add(theme)
-    
-    if (theme === 'dark') {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
+    root.classList.remove('light', 'dark', 'aqua')
+    root.classList.add('dark')
   }, [theme])
 
   return <>{children}</>

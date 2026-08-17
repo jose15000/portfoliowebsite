@@ -8,7 +8,7 @@ type props = {
 
 export function ChatBody ({children, className}: props) {
     return (
-         <div className={`rounded-md bg-[#0D1723] ring-1 ring-slate-700 ${className}`}>
+         <div className={`rounded-md bg-slate-800/1 backdrop-blur-md ring-1 ring-slate-700 ${className}`}>
             {children}
         </div>
     )

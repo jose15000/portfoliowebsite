@@ -133,7 +133,6 @@ return (
                     <div className="flex flex-row justify-between gap-2 shrink-0">
                         {/* CORREÇÃO 3: Removido o w-fit conflitante, deixado apenas o w-full */}
                         <ChatBody className="px-3 w-full py-3 shrink-0">
-                            <span>merda</span>
                             <ChatInput isLoading={loading} onSendMessage={request}/>
                         </ChatBody>
                         <ChatBody key="picker-container" className="shrink-0 px-2 size-fit py-2 gap-4 hidden md:block">

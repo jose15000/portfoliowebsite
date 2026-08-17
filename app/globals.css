@@ -117,15 +117,6 @@ h1 {
   color: var(--accent-teal-300);
   text-decoration: none;
   margin: 0 8px;
-  
-}
-
-
-.aqua .sub-nav a, 
-.aqua .sub-nav button {
-  color: var(--background-slate-900);
-  font-weight: 700;
-  
 }
 
 .sub-nav button, a:hover {
@@ -176,70 +167,4 @@ section {
 }
 
 
-html.aqua .aqua-btn {
-    font-family: "Geneva", system-ui;
-    border-radius: 1000px;
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    outline: none;
-    border: none;
- 
-    box-shadow: 0 0.375em 0.5em rgba(0, 0, 0, 0.3),
-                0 0.125em 0.125em rgba(15, 118, 110, 0.5),
-                inset 0 0.25em 0.25em rgba(0, 30, 27, 0.5),
-                inset 0 0.375em 0.5em 0.25em #5EEAD4;
-  }
- 
-  html.aqua .aqua-btn:focus,
-  html.aqua .aqua-btn:active {
-    box-shadow: 0 0.375em 0.5em rgba(0, 0, 0, 0.3),
-                0 0.125em 0.125em rgba(15, 118, 110, 0.5),
-                inset 0 0.25em 0.25em rgba(0, 30, 27, 0.5),
-                0 0 0.5em rgba(20, 184, 166, 0.5);
-  }
-
-  html.aqua .aqua-btn:hover {
-    cursor: pointer;
-  }
- 
-  html.aqua .aqua-btn::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 33%;
-    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
-    width: calc(100% - 0.875em);
-    border-radius: 2em 2em 0.5em 0.5em;
-    top: 5%;
-    filter: blur(1px);
-    z-index: 2;
-  }
- 
-  /* bottom glow */
-  html.aqua .aqua-btn::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 33%;
-    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5));
-    width: calc(100% - 1.25em);
-    border-radius: 0.75em;
-    bottom: 10%;
-    filter: blur(3px);
-  }
- 
-  html.aqua .aqua-btn a {
-    position: relative;
-    top: -1px;
-    z-index: 1;
-    letter-spacing: 0.0375em;
-    -webkit-text-stroke-width: 0.025em;
-    -webkit-text-stroke-color: #063d36;
-    color: #ffffff;
-    font-weight: 600;
-    text-shadow: 0 0.25em 0.2em rgba(0, 40, 36, 0.4);
-  }
 

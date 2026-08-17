@@ -46,12 +46,12 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
         rows={3}
         cols={1}
         disabled={isLoading}
-        className="flex-1 resize-none max-h-30 p-2.5 rounded-md bg-[#0D1723] focus:outline-none focus:ring-0 text-white disabled:opacity-50"
+        className="flex-1 resize-none max-h-30 p-2.5 rounded-md bg-transparent focus:outline-none focus:ring-0 text-white disabled:opacity-50"
       />
       <button 
         onClick={handleSend} 
         disabled={!message.trim() || isLoading}
-        className="px-4 py-2 bg-teal-500 hover:bg-teal-600 disabled:bg-zinc-700 text-black font-bold rounded-md transition-colors"
+        className="px-4 py-2 bg-teal-500 hover:bg-slate-600 disabled:bg-zinc-700 text-black font-bold rounded-md transition-colors"
       >
         {isLoading ? "..." : "Enviar"}
       </button>

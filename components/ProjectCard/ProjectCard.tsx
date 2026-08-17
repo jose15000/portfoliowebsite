@@ -1,5 +1,3 @@
-import { Icon } from "../icons/Icon";
-
 type props = {
     name: string;
     description: string;

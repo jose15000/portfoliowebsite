@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, type MouseEvent } from "react";
-import { ThemeToggler } from "./ThemeToggler/ThemeToggler";
+
 
 type Tab = {
   name: string;
@@ -73,8 +73,6 @@ export function Sandwich({ tabs, isOpen, onToggle, onSelect }: SandwichProps) {
                   className="rounded-lg px-3 py-3 text-sm font-medium text-slate-100 transition hover:bg-white/10"
                 >
                   {tab.name}
-
-                  <ThemeToggler/>
                 </a>
               ))}
             </nav>

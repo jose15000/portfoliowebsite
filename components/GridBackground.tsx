@@ -5,7 +5,6 @@ import { useTexture } from '@react-three/drei'
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ThemeName, THEMES } from './background/shaders/theme.config'
-import { AquaGamePhysics } from './AquaGame'
 import { useFBO } from '@react-three/drei'
 import { createPortal } from '@react-three/fiber'
 import { useThemeStore } from '@/store/useThemeStore'
@@ -120,9 +119,9 @@ const vertexShader = /* glsl */ `
 /* ------------------------------------------------------------------ */
 // <-- Importe isso lá no topo!
 
-function ShaderPlane({ theme = "aqua" }: { theme?: ThemeName }) {
+function ShaderPlane({ theme = "dark" }: { theme?: ThemeName }) {
   const bgTexture = useTexture('/images/meu-fundo.png')
-  const activeTheme = THEMES[theme] || THEMES['aqua'] 
+  const activeTheme = THEMES[theme] || THEMES.dark
   const materialRef = useRef<THREE.ShaderMaterial>(null)
  const { viewport } = useThree()
   const touchTexture = useMemo(() => new TouchTexture(), [])
@@ -182,8 +181,6 @@ function ShaderPlane({ theme = "aqua" }: { theme?: ThemeName }) {
             <meshBasicMaterial map={bgTexture} side={THREE.DoubleSide} />
           </mesh>
 
-          {/* Os peixes caindo na frente da imagem */}
-          {theme === 'aqua' && <AquaGamePhysics />}
         </group>,
         virtualScene
       )}

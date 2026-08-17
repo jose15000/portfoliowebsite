@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import { gridFragmentShader } from './gridShader';
-import { aquaFragmentShader } from './aquaShader';
-
 
 export const THEMES = {
   dark: {
@@ -10,14 +8,7 @@ export const THEMES = {
       uColorDark: { value: new THREE.Color('#050914') },
       uColorLight: { value: new THREE.Color('#0a1526') },
     }
-  },
-  aqua: {
-    fragment: aquaFragmentShader,
-    uniforms: {
-      uColorDark: { value: new THREE.Color('#17185a') },
-      uColorLight: { value: new THREE.Color('#557cc4') },
-    }
   }
-};
+} as const;
 
 export type ThemeName = keyof typeof THEMES;

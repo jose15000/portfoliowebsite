@@ -10,7 +10,7 @@ export default function Contact() {
           </p>
           
           <div style={{ marginBottom: "30px" }}>
-            <a href="mailto:jhenrique15000@gmail.com" className="aqua-btn" style={{ fontSize: "14px", padding: "8px 24px" }}>
+            <a href="mailto:jhenrique15000@gmail.com" style={{ fontSize: "14px", padding: "8px 24px", display: "inline-block", borderRadius: "9999px", background: "rgba(245, 158, 11, 0.15)", color: "#fbbf24", border: "1px solid rgba(251, 191, 36, 0.5)" }}>
               Send eMail
             </a>
           </div>
